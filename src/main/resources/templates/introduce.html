@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>자기소개</title>
+</head>
+<body>
+<p id="user-name">안녕하세요? 저는 강동안이에요</p>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const name = urlParams.get('name');
+
+  if (name) {
+    document.getElementById('user-name').innerText = `Hello ${name}!`;
+  }
+</script>
+</body>
+</html>
