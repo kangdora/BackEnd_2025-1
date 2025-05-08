@@ -1,4 +1,4 @@
-package com.example.bcsd;
+package com.example.bcsd.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +23,12 @@ public class HelloController {
     }
 
     @GetMapping("/introduce")
-    public String introduce(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+    public String introduce(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
         return "introduce";
     }
 
+    @ResponseBody
     @GetMapping("/json")
     public Map<String, String> getJson() {
         return Map.of("name", "강동안", "age", "24");
