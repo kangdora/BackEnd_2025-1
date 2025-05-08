@@ -21,8 +21,8 @@ public class PostController {
     public String getAllPosts(Model model){
         BoardResponseDto dto = articleService.getPosts();
 
-        model.addAttribute("title", dto.title());
-        model.addAttribute("articles", dto.articles());
+        model.addAttribute("title", dto.boardTitle());
+        model.addAttribute("articles", dto.articleResponseDtos());
         return "posts";
     }
 }

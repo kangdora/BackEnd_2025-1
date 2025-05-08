@@ -9,7 +9,7 @@
     <h1 th:text="${title}"></h1>
     <div th:each="article : ${articles}">
         <h3 th:text="${article.title}"></h3>
-        <span th:text="${article.author} + ' | ' + ${article.createdAt}"></span>
+        <span th:text="${article.authorName} + ' | ' + ${article.createdAt}"></span>
         <p th:text="${article.content}"></p>
     </div>
 </body>

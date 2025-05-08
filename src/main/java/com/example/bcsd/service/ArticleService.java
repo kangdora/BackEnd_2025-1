@@ -23,6 +23,7 @@ public class ArticleService {
     public ArticleService(ArticleRepository articleRepository, MemberRepository memberRepository) {
         this.articleRepository = articleRepository;
         this.memberRepository = memberRepository;
+        memberRepository.testMemberRepository(); // 테스트용
     }
 
     public void saveArticle(ArticleSaveRequestDto dto) {
@@ -60,7 +61,7 @@ public class ArticleService {
     }
 
     public BoardResponseDto getPosts() {
-        return new BoardResponseDto("자유 게시판", articleRepository.getArticles());
+        return new BoardResponseDto("자유 게시판", getAllArticles());
     }
 
     public void deleteArticle(Long id){

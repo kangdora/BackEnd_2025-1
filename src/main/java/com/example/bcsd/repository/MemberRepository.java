@@ -23,4 +23,13 @@ public class MemberRepository {
         }
         return null;
     }
+
+    public void testMemberRepository() {
+        members.add(new Member(
+                1L,
+                "kang",
+                "ioprt123@koreatech.ac.kr",
+                "password"
+        ));
+    }
 }
