@@ -57,7 +57,9 @@ public class ArticleRepository {
     public void editArticle(Long id, String title, String content) {
         for (Article article : articles) {
             if (article.getId().equals(id)) {
-                article.changeArticle(title, content, LocalDate.now().toString());
+                Article updatedArticle = article.changeArticle(title, content, LocalDate.now().toString());
+                deleteArticle(id);
+                articles.add(updatedArticle);
             }
         }
     }
