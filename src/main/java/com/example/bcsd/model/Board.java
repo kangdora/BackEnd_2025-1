@@ -1,8 +1,8 @@
 package com.example.bcsd.model;
 
 public class Board {
-    private Long id;
-    private String title;
+    private final Long id;
+    private final String title;
 
     public Board(Long id, String title) {
         this.id = id;
@@ -13,8 +13,8 @@ public class Board {
         return title;
     }
 
-    public void setTitle(String Title) {
-        this.title = title;
+    public Board changeTitle(String title) {
+        return new Board(id, title);
     }
 
     public Long getId() {
