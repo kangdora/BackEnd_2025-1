@@ -1,7 +1,5 @@
 package com.example.bcsd.controller;
 
-// controller는 article의 존재를 모르게 하라.
-
 import com.example.bcsd.dto.ArticleResponseDto;
 import com.example.bcsd.dto.ArticleSaveRequestDto;
 import com.example.bcsd.dto.ArticleUpdateRequestDto;
