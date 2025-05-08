@@ -27,7 +27,7 @@ public class Article {
         return title;
     }
 
-    public Article changeTitle(String title) {
+    public Article changeArticle(String title, String content, String modificationDate) {
         return new Article(id, title, authorId, boardId, createdAt, content, modificationDate);
     }
 
@@ -53,9 +53,5 @@ public class Article {
 
     public String getContent() {
         return content;
-    }
-
-    public Article changeContent(String content) {
-        return new Article(id, title, authorId, boardId, createdAt, content, modificationDate);
     }
 }

@@ -2,6 +2,7 @@ package com.example.bcsd.service;
 
 import com.example.bcsd.dto.ArticleResponseDto;
 import com.example.bcsd.dto.ArticleSaveRequestDto;
+import com.example.bcsd.dto.ArticleUpdateRequestDto;
 import com.example.bcsd.dto.BoardResponseDto;
 import com.example.bcsd.model.Article;
 import com.example.bcsd.repository.ArticleRepository;
@@ -56,5 +57,9 @@ public class ArticleService {
 
     public void deleteArticle(Long id){
         articleRepository.deleteArticle(id);
+    }
+
+    public void editArticle(Long id, ArticleUpdateRequestDto dto){
+        articleRepository.editArticle(id, dto.title(), dto.content());
     }
 }
