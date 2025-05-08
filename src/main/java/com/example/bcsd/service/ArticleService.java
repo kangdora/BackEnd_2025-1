@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -47,8 +48,15 @@ public class ArticleService {
         );
     }
 
-    public List<Article> getAllArticles() {
-        return articleRepository.getArticles();
+    public List<ArticleResponseDto> getAllArticles() {
+        return articleRepository.getArticles().stream()
+                .map(article -> new ArticleResponseDto(
+                        memberRepository.getMember(article.getAuthorId()).getName(),
+                        article.getTitle(),
+                        article.getContent(),
+                        article.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
     }
 
     public BoardResponseDto getPosts() {

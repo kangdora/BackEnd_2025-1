@@ -46,7 +46,7 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Article>> getAllArticles() {
-
+    public ResponseEntity<List<ArticleResponseDto>> getAllArticles() {
+        return ResponseEntity.ok(articleService.getAllArticles());
     }
 }
