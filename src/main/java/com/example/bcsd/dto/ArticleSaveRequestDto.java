@@ -4,6 +4,5 @@ public record ArticleSaveRequestDto(
         String title,
         Long authorId,
         Long boardId,
-        String createdAt,
         String content) {
 }

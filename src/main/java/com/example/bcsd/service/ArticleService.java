@@ -29,8 +29,9 @@ public class ArticleService {
                 dto.title(),
                 dto.authorId(),
                 dto.boardId(),
-                dto.createdAt(),
-                dto.content()
+                null,
+                dto.content(),
+                null
         );
         articleRepository.addArticle(article);
     }

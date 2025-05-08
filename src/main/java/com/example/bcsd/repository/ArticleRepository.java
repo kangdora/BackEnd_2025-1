@@ -3,6 +3,7 @@ package com.example.bcsd.repository;
 import com.example.bcsd.model.Article;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +31,9 @@ public class ArticleRepository {
                 article.getTitle(),
                 article.getAuthorId(),
                 article.getBoardId(),
-                article.getCreatedAt(),
-                article.getContent());
+                LocalDate.now().toString(),
+                article.getContent(),
+                "");
         articles.add(newArticle);
     }
 
