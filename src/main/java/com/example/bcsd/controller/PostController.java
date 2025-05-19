@@ -20,7 +20,7 @@ public class PostController {
     }
 
     @GetMapping
-    public String getPostByBoardId(@RequestParam(name = "id", required = false, defaultValue = "World") Long id, Model model){
+    public String getPostByBoardId(@RequestParam(name = "boardId", required = false, defaultValue = "World") Long id, Model model){
         PostResponseDto dto = articleService.getArticleIdsById(id);
 
         model.addAttribute("boardName", dto.BoardName());
