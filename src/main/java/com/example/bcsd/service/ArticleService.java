@@ -40,16 +40,19 @@ public class ArticleService {
     public ArticleResponseDto getArticleById(Long id) {
         Article article = articleDao.getArticle(id);
         return new ArticleResponseDto(
+                article.getId(),
                 article.getAuthorId(),
+                article.getBoardId(),
                 article.getTitle(),
                 article.getContent(),
-                article.getCreatedDate()
+                article.getCreatedDate(),
+                article.getModifiedDate()
         );
     }
 
-    public List<ArticlesResponseDto> getArticlesByBoardId(Long boardId) {
+    public List<ArticleResponseDto> getArticlesByBoardId(Long boardId) {
         return articleDao.findByBoardId(boardId).stream()
-                .map(article -> new ArticlesResponseDto(
+                .map(article -> new ArticleResponseDto(
                         article.getId(),
                         article.getAuthorId(),
                         article.getBoardId(),

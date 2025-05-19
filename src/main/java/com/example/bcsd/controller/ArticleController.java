@@ -1,9 +1,8 @@
 package com.example.bcsd.controller;
 
-import com.example.bcsd.dto.ArticleResponseDto;
 import com.example.bcsd.dto.ArticleSaveRequestDto;
 import com.example.bcsd.dto.ArticleUpdateRequestDto;
-import com.example.bcsd.dto.ArticlesResponseDto;
+import com.example.bcsd.dto.ArticleResponseDto;
 import com.example.bcsd.service.ArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -48,7 +47,7 @@ public class ArticleController {
 
     // GET /articles?boardId={boardId}
     @GetMapping
-    public ResponseEntity<List<ArticlesResponseDto>> getArticlesByBoardId(@RequestParam(name = "id", required = false, defaultValue = "World") Long id, Model model) {
+    public ResponseEntity<List<ArticleResponseDto>> getArticlesByBoardId(@RequestParam(name = "id", required = false, defaultValue = "World") Long id, Model model) {
         return ResponseEntity.ok(articleService.getArticlesByBoardId(id));
     }
 }
