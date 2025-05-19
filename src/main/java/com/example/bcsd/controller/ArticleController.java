@@ -3,7 +3,6 @@ package com.example.bcsd.controller;
 import com.example.bcsd.dto.ArticleResponseDto;
 import com.example.bcsd.dto.ArticleSaveRequestDto;
 import com.example.bcsd.dto.ArticleUpdateRequestDto;
-import com.example.bcsd.model.Article;
 import com.example.bcsd.service.ArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
