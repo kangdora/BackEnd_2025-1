@@ -1,5 +1,6 @@
 package com.example.bcsd.service;
 
+import com.example.bcsd.dao.ArticleDao;
 import com.example.bcsd.dto.ArticleResponseDto;
 import com.example.bcsd.dto.ArticleSaveRequestDto;
 import com.example.bcsd.dto.ArticleUpdateRequestDto;
@@ -10,37 +11,38 @@ import com.example.bcsd.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleDao articleDao;
     private final MemberRepository memberRepository;
 
     @Autowired
-    public ArticleService(ArticleRepository articleRepository, MemberRepository memberRepository) {
-        this.articleRepository = articleRepository;
+    public ArticleService(ArticleDao articleDao, MemberRepository memberRepository) {
+        this.articleDao = articleDao;
         this.memberRepository = memberRepository;
-        memberRepository.testMemberRepository(); // 테스트용
     }
 
     public void saveArticle(ArticleSaveRequestDto dto) {
+        String now = LocalDate.now().toString();
         Article article = new Article(
                 null,
                 dto.title(),
                 dto.authorId(),
                 dto.boardId(),
-                null,
+                now,
                 dto.content(),
-                null
+                now
         );
-        articleRepository.addArticle(article);
+        articleDao.insertArticle(article);
     }
 
     public ArticleResponseDto getArticleById(Long id) {
-        Article article = articleRepository.getArticle(id);
+        Article article = articleDao.getArticle(id);
         return new ArticleResponseDto(
                 memberRepository.getMember(article.getAuthorId()).getName(),
                 article.getTitle(),
@@ -49,8 +51,19 @@ public class ArticleService {
         );
     }
 
+    public List<ArticleResponseDto> getArticlesByBoardId(Long boardId) {
+        return articleDao.findByBoardId(boardId).stream()
+                .map(article -> new ArticleResponseDto(
+                        memberRepository.getMember(article.getAuthorId()).getName(),
+                        article.getTitle(),
+                        article.getContent(),
+                        article.getCreatedDate()
+                ))
+                .collect(Collectors.toList());
+    }
+
     public List<ArticleResponseDto> getAllArticles() {
-        return articleRepository.getArticles().stream()
+        return articleDao.getArticles().stream()
                 .map(article -> new ArticleResponseDto(
                         memberRepository.getMember(article.getAuthorId()).getName(),
                         article.getTitle(),
@@ -65,10 +78,10 @@ public class ArticleService {
     }
 
     public void deleteArticle(Long id){
-        articleRepository.deleteArticle(id);
+        articleDao.deleteArticle(id);
     }
 
     public void editArticle(Long id, ArticleUpdateRequestDto dto){
-        articleRepository.editArticle(id, dto.title(), dto.content());
+        articleDao.editArticle(id, dto.title(), dto.content(), LocalDate.now().toString());
     }
 }

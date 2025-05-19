@@ -5,6 +5,7 @@ import com.example.bcsd.dto.ArticleSaveRequestDto;
 import com.example.bcsd.dto.ArticleUpdateRequestDto;
 import com.example.bcsd.service.ArticleService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,12 +20,14 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    // post /articles
     @PostMapping
     public ResponseEntity<ArticleSaveRequestDto> createArticle(@RequestBody ArticleSaveRequestDto articleSaveRequestDto) {
         articleService.saveArticle(articleSaveRequestDto);
         return ResponseEntity.ok(articleSaveRequestDto);
     }
 
+    // get /articles/{id}
     @GetMapping("/{id}")
     public ResponseEntity<ArticleResponseDto> getArticle(@PathVariable Long id) {
         return ResponseEntity.ok(articleService.getArticleById(id));
@@ -42,8 +45,9 @@ public class ArticleController {
         return ResponseEntity.ok(dto);
     }
 
+    // GET /articles?boardId={boardId}
     @GetMapping
-    public ResponseEntity<List<ArticleResponseDto>> getAllArticles() {
-        return ResponseEntity.ok(articleService.getAllArticles());
+    public ResponseEntity<List<ArticleResponseDto>> getArticlesByBoardId(@RequestParam(name = "id", required = false, defaultValue = "World") Long id, Model model) {
+        return ResponseEntity.ok(articleService.getArticlesByBoardId(id));
     }
 }
