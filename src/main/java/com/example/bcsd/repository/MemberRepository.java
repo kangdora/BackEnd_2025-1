@@ -16,12 +16,10 @@ public class MemberRepository {
     }
 
     public Member getMember(Long id) {
-        for (Member member : members) {
-            if (member.getId().equals(id)) {
-                return member;
-            }
-        }
-        return null;
+        return members.stream()
+                .filter(member -> member.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     public void testMemberRepository() {

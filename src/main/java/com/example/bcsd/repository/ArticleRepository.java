@@ -17,12 +17,10 @@ public class ArticleRepository {
     }
 
     public Article getArticle(Long id) {
-        for (Article article : articles) {
-            if (article.getId().equals(id)) {
-                return article;
-            }
-        }
-        return null;
+        return articles.stream()
+                .filter(article -> article.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     public void addArticle(Article article) {

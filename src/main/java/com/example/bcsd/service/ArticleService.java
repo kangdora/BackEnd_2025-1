@@ -1,74 +1,94 @@
 package com.example.bcsd.service;
 
-import com.example.bcsd.dto.ArticleResponseDto;
-import com.example.bcsd.dto.ArticleSaveRequestDto;
-import com.example.bcsd.dto.ArticleUpdateRequestDto;
-import com.example.bcsd.dto.BoardResponseDto;
+import com.example.bcsd.dao.ArticleDao;
+import com.example.bcsd.dao.BoardDao;
+import com.example.bcsd.dto.*;
 import com.example.bcsd.model.Article;
-import com.example.bcsd.repository.ArticleRepository;
-import com.example.bcsd.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
 
-    private final ArticleRepository articleRepository;
-    private final MemberRepository memberRepository;
+    private final ArticleDao articleDao;
+    private final BoardDao boardDao;
 
     @Autowired
-    public ArticleService(ArticleRepository articleRepository, MemberRepository memberRepository) {
-        this.articleRepository = articleRepository;
-        this.memberRepository = memberRepository;
-        memberRepository.testMemberRepository(); // 테스트용
+    public ArticleService(ArticleDao articleDao, BoardDao boardDao) {
+        this.articleDao = articleDao;
+        this.boardDao = boardDao;
     }
 
-    public void saveArticle(ArticleSaveRequestDto dto) {
+    public ArticleResponseDto saveArticle(ArticleSaveRequestDto dto) {
+        String now = LocalDate.now().toString();
         Article article = new Article(
                 null,
                 dto.title(),
                 dto.authorId(),
                 dto.boardId(),
-                null,
+                now,
                 dto.content(),
-                null
+                now
         );
-        articleRepository.addArticle(article);
+        articleDao.insertArticle(article);
+
+        return new ArticleResponseDto(
+                article.getId(),
+                article.getAuthorId(),
+                article.getBoardId(),
+                article.getTitle(),
+                article.getContent(),
+                article.getCreatedDate(),
+                article.getModifiedDate()
+        );
     }
 
     public ArticleResponseDto getArticleById(Long id) {
-        Article article = articleRepository.getArticle(id);
+        Article article = articleDao.getArticle(id);
         return new ArticleResponseDto(
-                memberRepository.getMember(article.getAuthorId()).getName(),
+                article.getId(),
+                article.getAuthorId(),
+                article.getBoardId(),
                 article.getTitle(),
                 article.getContent(),
-                article.getCreatedAt()
+                article.getCreatedDate(),
+                article.getModifiedDate()
         );
     }
 
-    public List<ArticleResponseDto> getAllArticles() {
-        return articleRepository.getArticles().stream()
+    public List<ArticleResponseDto> getArticlesByBoardId(Long boardId) {
+        return articleDao.findByBoardId(boardId).stream()
                 .map(article -> new ArticleResponseDto(
-                        memberRepository.getMember(article.getAuthorId()).getName(),
+                        article.getId(),
+                        article.getAuthorId(),
+                        article.getBoardId(),
                         article.getTitle(),
                         article.getContent(),
-                        article.getCreatedAt()
+                        article.getCreatedDate(),
+                        article.getModifiedDate()
                 ))
                 .collect(Collectors.toList());
     }
 
-    public BoardResponseDto getPosts() {
-        return new BoardResponseDto("자유 게시판", getAllArticles());
+    public PostResponseDto getArticleIdsById(Long BoardId) {
+        return new PostResponseDto(
+                boardDao.getBoardName(BoardId),
+                articleDao.findByBoardId(BoardId).stream()
+                        .map(Article::getId)
+                        .toList()
+        );
     }
 
     public void deleteArticle(Long id){
-        articleRepository.deleteArticle(id);
+        articleDao.deleteArticle(id);
     }
 
-    public void editArticle(Long id, ArticleUpdateRequestDto dto){
-        articleRepository.editArticle(id, dto.title(), dto.content());
+    public ArticleResponseDto editArticle(Long id, ArticleUpdateRequestDto dto){
+        articleDao.editArticle(id, dto.title(), dto.content(), LocalDate.now().toString());
+        return getArticleById(id);
     }
 }
