@@ -74,17 +74,6 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public List<ArticleResponseDto> getAllArticles() {
-        return articleDao.getArticles().stream()
-                .map(article -> new ArticleResponseDto(
-                        memberRepository.getMember(article.getAuthorId()).getName(),
-                        article.getTitle(),
-                        article.getContent(),
-                        article.getCreatedDate()
-                ))
-                .collect(Collectors.toList());
-    }
-
     public PostResponseDto getArticleIdsById(Long BoardId) {
         return new PostResponseDto(
                 boardDao.getBoardName(BoardId),
@@ -94,15 +83,12 @@ public class ArticleService {
         );
     }
 
-    public BoardResponseDto getPosts() {
-        return new BoardResponseDto("자유 게시판", getAllArticles());
-    }
-
     public void deleteArticle(Long id){
         articleDao.deleteArticle(id);
     }
 
-    public void editArticle(Long id, ArticleUpdateRequestDto dto){
+    public ArticleResponseDto editArticle(Long id, ArticleUpdateRequestDto dto){
         articleDao.editArticle(id, dto.title(), dto.content(), LocalDate.now().toString());
+        return getArticleById(id);
     }
 }

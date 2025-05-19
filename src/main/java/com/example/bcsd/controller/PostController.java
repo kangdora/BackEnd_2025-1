@@ -20,15 +20,6 @@ public class PostController {
     }
 
     @GetMapping
-    public String getAllPosts(Model model){
-        BoardResponseDto dto = articleService.getPosts();
-
-        model.addAttribute("title", dto.boardTitle());
-        model.addAttribute("articles", dto.articleResponseDtos());
-        return "posts";
-    }
-
-    @GetMapping
     public String getPostByBoardId(@RequestParam(name = "id", required = false, defaultValue = "World") Long id, Model model){
         PostResponseDto dto = articleService.getArticleIdsById(id);
 
