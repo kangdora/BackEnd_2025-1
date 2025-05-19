@@ -23,7 +23,7 @@ public class ArticleService {
         this.boardDao = boardDao;
     }
 
-    public void saveArticle(ArticleSaveRequestDto dto) {
+    public ArticleResponseDto saveArticle(ArticleSaveRequestDto dto) {
         String now = LocalDate.now().toString();
         Article article = new Article(
                 null,
@@ -35,6 +35,16 @@ public class ArticleService {
                 now
         );
         articleDao.insertArticle(article);
+
+        return new ArticleResponseDto(
+                article.getId(),
+                article.getAuthorId(),
+                article.getBoardId(),
+                article.getTitle(),
+                article.getContent(),
+                article.getCreatedDate(),
+                article.getModifiedDate()
+        );
     }
 
     public ArticleResponseDto getArticleById(Long id) {

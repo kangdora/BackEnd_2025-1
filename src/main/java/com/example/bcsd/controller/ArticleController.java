@@ -22,9 +22,8 @@ public class ArticleController {
 
     // post /articles
     @PostMapping
-    public ResponseEntity<ArticleSaveRequestDto> createArticle(@RequestBody ArticleSaveRequestDto articleSaveRequestDto) {
-        articleService.saveArticle(articleSaveRequestDto);
-        return ResponseEntity.ok(articleSaveRequestDto);
+    public ResponseEntity<ArticleResponseDto> createArticle(@RequestBody ArticleSaveRequestDto articleSaveRequestDto) {
+        return ResponseEntity.ok(articleService.saveArticle(articleSaveRequestDto));
     }
 
     // get /articles/{id}
