@@ -45,7 +45,7 @@ public class ArticleService {
                 memberRepository.getMember(article.getAuthorId()).getName(),
                 article.getTitle(),
                 article.getContent(),
-                article.getCreatedAt()
+                article.getCreatedDate()
         );
     }
 
@@ -55,7 +55,7 @@ public class ArticleService {
                         memberRepository.getMember(article.getAuthorId()).getName(),
                         article.getTitle(),
                         article.getContent(),
-                        article.getCreatedAt()
+                        article.getCreatedDate()
                 ))
                 .collect(Collectors.toList());
     }

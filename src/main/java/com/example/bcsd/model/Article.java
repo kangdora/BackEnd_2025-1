@@ -5,18 +5,18 @@ public class Article {
     private final String title;
     private final Long authorId;
     private final Long boardId;
-    private final String createdAt;
+    private final String createdDate;
     private final String content;
-    private final String modificationDate;
+    private final String modifiedDate;
 
     public Article(Long id, String title, Long authorId, Long boardId, String createdAt, String content, String modificationDate) {
         this.id = id;
         this.title = title;
         this.authorId = authorId;
         this.boardId = boardId;
-        this.createdAt = createdAt;
+        this.createdDate = createdAt;
         this.content = content;
-        this.modificationDate = modificationDate;
+        this.modifiedDate = modificationDate;
     }
 
     public Long getId() {
@@ -28,7 +28,7 @@ public class Article {
     }
 
     public Article changeArticle(String title, String content, String modificationDate) {
-        return new Article(id, title, authorId, boardId, createdAt, content, modificationDate);
+        return new Article(id, title, authorId, boardId, createdDate, content, modificationDate);
     }
 
     public Long getAuthorId() {
@@ -39,16 +39,16 @@ public class Article {
         return boardId;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public String getModificationDate() {
-        return modificationDate;
+    public String getModifiedDate() {
+        return modifiedDate;
     }
 
     public Article updateModificationDate(String date) {
-        return new Article(id, title, authorId, boardId, createdAt, content, date);
+        return new Article(id, title, authorId, boardId, createdDate, content, date);
     }
 
     public String getContent() {
