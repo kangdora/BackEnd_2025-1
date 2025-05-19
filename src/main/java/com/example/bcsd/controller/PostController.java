@@ -1,6 +1,7 @@
 package com.example.bcsd.controller;
 
 import com.example.bcsd.dto.BoardResponseDto;
+import com.example.bcsd.dto.PostResponseDto;
 import com.example.bcsd.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,10 +30,10 @@ public class PostController {
 
     @GetMapping
     public String getPostByBoardId(@RequestParam(name = "id", required = false, defaultValue = "World") Long id, Model model){
-        BoardResponseDto dto = articleService.getPosts();
+        PostResponseDto dto = articleService.getArticleIdsById(id);
 
-        model.addAttribute("BoardName", dto.boardTitle());
-        model.addAttribute("articles", dto.articleResponseDtos());
+        model.addAttribute("boardName", dto.BoardName());
+        model.addAttribute("articles", dto.ArticleIds());
         return "post";
     }
 }

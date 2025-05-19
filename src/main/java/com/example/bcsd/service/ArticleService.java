@@ -1,13 +1,9 @@
 package com.example.bcsd.service;
 
 import com.example.bcsd.dao.ArticleDao;
-import com.example.bcsd.dto.ArticleResponseDto;
-import com.example.bcsd.dto.ArticleSaveRequestDto;
-import com.example.bcsd.dto.ArticleUpdateRequestDto;
-import com.example.bcsd.dto.BoardResponseDto;
+import com.example.bcsd.dao.BoardDao;
+import com.example.bcsd.dto.*;
 import com.example.bcsd.model.Article;
-import com.example.bcsd.repository.ArticleRepository;
-import com.example.bcsd.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +15,12 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleDao articleDao;
-    private final MemberRepository memberRepository;
+    private final BoardDao boardDao;
 
     @Autowired
-    public ArticleService(ArticleDao articleDao, MemberRepository memberRepository) {
+    public ArticleService(ArticleDao articleDao, BoardDao boardDao) {
         this.articleDao = articleDao;
-        this.memberRepository = memberRepository;
+        this.boardDao = boardDao;
     }
 
     public void saveArticle(ArticleSaveRequestDto dto) {
@@ -44,20 +40,23 @@ public class ArticleService {
     public ArticleResponseDto getArticleById(Long id) {
         Article article = articleDao.getArticle(id);
         return new ArticleResponseDto(
-                memberRepository.getMember(article.getAuthorId()).getName(),
+                article.getAuthorId(),
                 article.getTitle(),
                 article.getContent(),
                 article.getCreatedDate()
         );
     }
 
-    public List<ArticleResponseDto> getArticlesByBoardId(Long boardId) {
+    public List<ArticlesResponseDto> getArticlesByBoardId(Long boardId) {
         return articleDao.findByBoardId(boardId).stream()
-                .map(article -> new ArticleResponseDto(
-                        memberRepository.getMember(article.getAuthorId()).getName(),
+                .map(article -> new ArticlesResponseDto(
+                        article.getId(),
+                        article.getAuthorId(),
+                        article.getBoardId(),
                         article.getTitle(),
                         article.getContent(),
-                        article.getCreatedDate()
+                        article.getCreatedDate(),
+                        article.getModifiedDate()
                 ))
                 .collect(Collectors.toList());
     }
@@ -71,6 +70,15 @@ public class ArticleService {
                         article.getCreatedDate()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public PostResponseDto getArticleIdsById(Long BoardId) {
+        return new PostResponseDto(
+                boardDao.getBoardName(BoardId),
+                articleDao.findByBoardId(BoardId).stream()
+                        .map(Article::getId)
+                        .toList()
+        );
     }
 
     public BoardResponseDto getPosts() {

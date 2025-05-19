@@ -9,14 +9,14 @@ public class Article {
     private final String content;
     private final String modifiedDate;
 
-    public Article(Long id, String title, Long authorId, Long boardId, String createdAt, String content, String modificationDate) {
+    public Article(Long id, String title, Long authorId, Long boardId, String createdAt, String content, String modifiedDate) {
         this.id = id;
         this.title = title;
         this.authorId = authorId;
         this.boardId = boardId;
         this.createdDate = createdAt;
         this.content = content;
-        this.modifiedDate = modificationDate;
+        this.modifiedDate = modifiedDate;
     }
 
     public Long getId() {
@@ -27,8 +27,8 @@ public class Article {
         return title;
     }
 
-    public Article changeArticle(String title, String content, String modificationDate) {
-        return new Article(id, title, authorId, boardId, createdDate, content, modificationDate);
+    public Article changeArticle(String title, String content, String modifiedDate) {
+        return new Article(id, title, authorId, boardId, createdDate, content, modifiedDate);
     }
 
     public Long getAuthorId() {
