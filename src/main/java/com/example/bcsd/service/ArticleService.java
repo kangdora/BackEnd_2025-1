@@ -3,8 +3,12 @@ package com.example.bcsd.service;
 import com.example.bcsd.dao.ArticleDao;
 import com.example.bcsd.dao.BoardDao;
 import com.example.bcsd.dto.*;
+import com.example.bcsd.exception.CustomException;
+import com.example.bcsd.exception.ErrorCode;
+import com.example.bcsd.exception.InvalidUserReferenceException;
 import com.example.bcsd.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -48,17 +52,23 @@ public class ArticleService {
     }
 
     public ArticleResponseDto getArticleById(Long id) {
-        Article article = articleDao.getArticle(id);
-        return new ArticleResponseDto(
-                article.getId(),
-                article.getAuthorId(),
-                article.getBoardId(),
-                article.getTitle(),
-                article.getContent(),
-                article.getCreatedDate(),
-                article.getModifiedDate()
-        );
+        try {
+            Article article = articleDao.getArticle(id);
+            return new ArticleResponseDto(
+                    article.getId(),
+                    article.getAuthorId(),
+                    article.getBoardId(),
+                    article.getTitle(),
+                    article.getContent(),
+                    article.getCreatedDate(),
+                    article.getModifiedDate()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomException(ErrorCode.ARTICLE_NOT_FOUND);
+        }
     }
+
+
 
     public List<ArticleResponseDto> getArticlesByBoardId(Long boardId) {
         return articleDao.findByBoardId(boardId).stream()

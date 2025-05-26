@@ -1,6 +1,5 @@
 package com.example.bcsd.controller;
 
-import com.example.bcsd.dto.BoardResponseDto;
 import com.example.bcsd.dto.PostResponseDto;
 import com.example.bcsd.service.ArticleService;
 import org.springframework.stereotype.Controller;
