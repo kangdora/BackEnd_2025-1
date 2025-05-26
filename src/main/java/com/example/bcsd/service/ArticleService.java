@@ -103,7 +103,6 @@ public class ArticleService {
     }
 
     public void deleteArticle(Long id) {
-        if (articleDao.isExistArticleByAuthorId(id))
         articleDao.deleteArticle(id);
     }
 
