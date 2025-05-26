@@ -83,4 +83,16 @@ public class ArticleDao {
         String sql = "DELETE FROM article WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    public boolean isExistArticleByAuthorId(Long authorId) {
+        String sql = "SELECT COUNT(*) FROM article WHERE author_id = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, authorId);
+        return count != null && count > 0;
+    }
+
+    public boolean isExistArticleByBoard(Long boardId) {
+        String sql = "SELECT COUNT(*) FROM article WHERE board_id = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, boardId);
+        return count != null && count > 0;
+    }
 }

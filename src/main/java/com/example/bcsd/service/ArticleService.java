@@ -3,8 +3,11 @@ package com.example.bcsd.service;
 import com.example.bcsd.dao.ArticleDao;
 import com.example.bcsd.dao.BoardDao;
 import com.example.bcsd.dto.*;
+import com.example.bcsd.exception.CustomException;
+import com.example.bcsd.exception.ErrorCode;
 import com.example.bcsd.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,6 +27,13 @@ public class ArticleService {
     }
 
     public ArticleResponseDto saveArticle(ArticleSaveRequestDto dto) {
+        if (dto.authorId() == null) {
+            throw new CustomException(ErrorCode.USER_REFERENCE_REQUIRED);
+        }
+        if (dto.boardId() == null) {
+            throw new CustomException(ErrorCode.BOARD_REFERENCE_REQUIRED);
+        }
+
         String now = LocalDate.now().toString();
         Article article = new Article(
                 null,
@@ -34,7 +44,11 @@ public class ArticleService {
                 dto.content(),
                 now
         );
-        articleDao.insertArticle(article);
+        try {
+            articleDao.insertArticle(article);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomException(ErrorCode.INVALID_USER_OR_BOARD_REFERENCE);
+        }
 
         return new ArticleResponseDto(
                 article.getId(),
@@ -48,17 +62,22 @@ public class ArticleService {
     }
 
     public ArticleResponseDto getArticleById(Long id) {
-        Article article = articleDao.getArticle(id);
-        return new ArticleResponseDto(
-                article.getId(),
-                article.getAuthorId(),
-                article.getBoardId(),
-                article.getTitle(),
-                article.getContent(),
-                article.getCreatedDate(),
-                article.getModifiedDate()
-        );
+        try {
+            Article article = articleDao.getArticle(id);
+            return new ArticleResponseDto(
+                    article.getId(),
+                    article.getAuthorId(),
+                    article.getBoardId(),
+                    article.getTitle(),
+                    article.getContent(),
+                    article.getCreatedDate(),
+                    article.getModifiedDate()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomException(ErrorCode.ARTICLE_NOT_FOUND);
+        }
     }
+
 
     public List<ArticleResponseDto> getArticlesByBoardId(Long boardId) {
         return articleDao.findByBoardId(boardId).stream()
@@ -83,12 +102,16 @@ public class ArticleService {
         );
     }
 
-    public void deleteArticle(Long id){
+    public void deleteArticle(Long id) {
         articleDao.deleteArticle(id);
     }
 
-    public ArticleResponseDto editArticle(Long id, ArticleUpdateRequestDto dto){
-        articleDao.editArticle(id, dto.title(), dto.content(), LocalDate.now().toString());
-        return getArticleById(id);
+    public ArticleResponseDto editArticle(Long id, ArticleUpdateRequestDto dto) {
+        try {
+            articleDao.editArticle(id, dto.title(), dto.content(), LocalDate.now().toString());
+            return getArticleById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomException(ErrorCode.INVALID_USER_OR_BOARD_REFERENCE);
+        }
     }
 }
