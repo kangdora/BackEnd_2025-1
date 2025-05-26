@@ -45,7 +45,11 @@ public class ArticleService {
                 dto.content(),
                 now
         );
-        articleDao.insertArticle(article);
+        try {
+            articleDao.insertArticle(article);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomException(ErrorCode.INVALID_USER_OR_BOARD_REFERENCE);
+        }
 
         return new ArticleResponseDto(
                 article.getId(),
@@ -108,7 +112,7 @@ public class ArticleService {
             articleDao.editArticle(id, dto.title(), dto.content(), LocalDate.now().toString());
             return getArticleById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new CustomException(ErrorCode.INVALID_USER_REFERENCE);
+            throw new CustomException(ErrorCode.INVALID_USER_OR_BOARD_REFERENCE);
         }
     }
 }

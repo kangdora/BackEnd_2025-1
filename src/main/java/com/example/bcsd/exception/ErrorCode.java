@@ -9,8 +9,7 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    INVALID_USER_REFERENCE(BAD_REQUEST, "존재하지 않는 사용자입니다."),
-    INVALID_BOARD_REFERENCE(BAD_REQUEST, "존재하지 않는 게시판입니다."),
+    INVALID_USER_OR_BOARD_REFERENCE(BAD_REQUEST, "존재하지 않는 사용자이거나 게시판입니다."),
     USER_REFERENCE_REQUIRED(BAD_REQUEST, "사용자의 입력이 필요합니다."),
     BOARD_REFERENCE_REQUIRED(BAD_REQUEST, "게시판의 입력이 필요합니다."),
     ARTICLE_REFERENCE_REQUIRED(BAD_REQUEST, "게시글의 입력이 필요합니다."),
