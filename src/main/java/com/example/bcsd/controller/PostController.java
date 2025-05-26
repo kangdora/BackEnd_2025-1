@@ -2,21 +2,22 @@ package com.example.bcsd.controller;
 
 import com.example.bcsd.dto.PostResponseDto;
 import com.example.bcsd.service.ArticleService;
+import com.example.bcsd.service.PostService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/posts")
 @Controller
 public class PostController {
 
     private final ArticleService articleService;
+    private final PostService postService;
 
-    public PostController(ArticleService articleService) {
+    public PostController(ArticleService articleService, PostService postService) {
         this.articleService = articleService;
+        this.postService = postService;
     }
 
     @GetMapping
@@ -28,8 +29,10 @@ public class PostController {
         return "post";
     }
 
+    @ResponseBody
     @DeleteMapping
-    public String deletePostByBoardId(@RequestParam(name = "boardId", required = false, defaultValue = "World") Long id, Model model){
-
+    public ResponseEntity<String> deletePostByBoardId(@RequestParam(name = "boardId", required = false, defaultValue = "World") Long id, Model model){
+        postService.deleteBoard(id);
+        return ResponseEntity.ok("deleted id:" + id);
     }
 }

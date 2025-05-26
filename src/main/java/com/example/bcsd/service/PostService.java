@@ -19,7 +19,7 @@ public class PostService {
         this.articleDao = articleDao;
     }
 
-    public void deleteMember(Long boardId) {
+    public void deleteBoard(Long boardId) {
         Board board = boardDao.getBoard(boardId);
         if (board == null) {
             throw new CustomException(ErrorCode.BOARD_NOT_FOUND);

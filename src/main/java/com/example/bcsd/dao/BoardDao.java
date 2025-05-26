@@ -1,7 +1,6 @@
 package com.example.bcsd.dao;
 
 import com.example.bcsd.model.Board;
-import com.example.bcsd.model.Member;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
