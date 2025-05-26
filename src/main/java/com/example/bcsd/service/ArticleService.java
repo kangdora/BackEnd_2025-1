@@ -5,7 +5,6 @@ import com.example.bcsd.dao.BoardDao;
 import com.example.bcsd.dto.*;
 import com.example.bcsd.exception.CustomException;
 import com.example.bcsd.exception.ErrorCode;
-import com.example.bcsd.exception.InvalidUserReferenceException;
 import com.example.bcsd.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +28,13 @@ public class ArticleService {
     }
 
     public ArticleResponseDto saveArticle(ArticleSaveRequestDto dto) {
+        if (dto.authorId() == null) {
+            throw new CustomException(ErrorCode.USER_REFERENCE_REQUIRED);
+        }
+        if (dto.boardId() == null) {
+            throw new CustomException(ErrorCode.BOARD_REFERENCE_REQUIRED);
+        }
+
         String now = LocalDate.now().toString();
         Article article = new Article(
                 null,
@@ -69,7 +76,6 @@ public class ArticleService {
     }
 
 
-
     public List<ArticleResponseDto> getArticlesByBoardId(Long boardId) {
         return articleDao.findByBoardId(boardId).stream()
                 .map(article -> new ArticleResponseDto(
@@ -93,12 +99,16 @@ public class ArticleService {
         );
     }
 
-    public void deleteArticle(Long id){
+    public void deleteArticle(Long id) {
         articleDao.deleteArticle(id);
     }
 
-    public ArticleResponseDto editArticle(Long id, ArticleUpdateRequestDto dto){
-        articleDao.editArticle(id, dto.title(), dto.content(), LocalDate.now().toString());
-        return getArticleById(id);
+    public ArticleResponseDto editArticle(Long id, ArticleUpdateRequestDto dto) {
+        try {
+            articleDao.editArticle(id, dto.title(), dto.content(), LocalDate.now().toString());
+            return getArticleById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CustomException(ErrorCode.INVALID_USER_REFERENCE);
+        }
     }
 }
