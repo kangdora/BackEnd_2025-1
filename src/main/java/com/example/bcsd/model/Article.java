@@ -1,57 +1,49 @@
 package com.example.bcsd.model;
 
-public class Article {
-    private final Long id;
-    private final String title;
-    private final Long authorId;
-    private final Long boardId;
-    private final String createdDate;
-    private final String content;
-    private final String modifiedDate;
+import jakarta.persistence.*;
+import lombok.*;
 
-    public Article(Long id, String title, Long authorId, Long boardId, String createdAt, String content, String modifiedDate) {
+@Entity
+@Table(name = "articles")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Article {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Member author;
+
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", nullable = false)
+    private Board board;
+
+    private String createdDate;
+
+    private String content;
+
+    private String modifiedDate;
+
+    @Builder
+    public Article(Long id, String title, Member author, Board board, String createdAt, String content, String modifiedDate) {
         this.id = id;
         this.title = title;
-        this.authorId = authorId;
-        this.boardId = boardId;
+        this.author = author;
+        this.board = board;
         this.createdDate = createdAt;
         this.content = content;
         this.modifiedDate = modifiedDate;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Article changeArticle(String title, String content, String modifiedDate) {
-        return new Article(id, title, authorId, boardId, createdDate, content, modifiedDate);
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public Long getBoardId() {
-        return boardId;
-    }
-
-    public String getCreatedDate() {
-        return createdDate;
-    }
-
-    public String getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public Article updateModificationDate(String date) {
-        return new Article(id, title, authorId, boardId, createdDate, content, date);
-    }
-
-    public String getContent() {
-        return content;
+    public void changeArticle(String title, String content, String modifiedDate) {
+        this.title = title;
+        this.content = content;
+        this.modifiedDate = modifiedDate;
     }
 }

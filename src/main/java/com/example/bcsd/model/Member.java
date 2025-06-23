@@ -1,43 +1,43 @@
 package com.example.bcsd.model;
 
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "members")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String email;
+
     private String password;
 
+    @Builder
     public Member(Long id, String name, String email, String password) {
-        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public void changeName(String name) {
+        this.name = name;
     }
 
-    public String getName() {
-        return name;
+    public void changeEmail(String email) {
+        this.email = email;
     }
 
-    public Member changeName(String name) {
-        return new Member(id, name, email, password);
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Member changeEmail(String email) {
-        return new Member(id, name, email, password);
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Member changePassword(String password) {
-        return new Member(id, name, email, password);
+    public void changePassword(String password) {
+        this.password = password;
     }
 }
