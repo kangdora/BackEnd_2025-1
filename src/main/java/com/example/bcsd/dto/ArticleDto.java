@@ -1,5 +1,6 @@
 package com.example.bcsd.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public record ArticleDto(
@@ -8,6 +9,6 @@ public record ArticleDto(
         Long boardId,
         String title,
         String content,
-        Date createdDate,
-        Date modifiedDate
+        LocalDateTime createdDate,
+        LocalDateTime modifiedDate
 ) {}
