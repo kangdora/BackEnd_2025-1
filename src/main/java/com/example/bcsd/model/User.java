@@ -16,9 +16,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String userId;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Article> articles;
 
