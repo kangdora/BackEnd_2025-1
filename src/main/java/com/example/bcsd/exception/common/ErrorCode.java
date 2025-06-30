@@ -9,7 +9,10 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "게시판을 찾을 수 없습니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 등록된 이메일입니다."),
+    PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다."),
     NULL_REQUEST(HttpStatus.BAD_REQUEST, "요청 값이 null입니다."),
     INVALID_REFERENCE(HttpStatus.BAD_REQUEST, "잘못된 참조입니다."),
     DELETION_NOT_ALLOWED(HttpStatus.FORBIDDEN, "삭제가 허용되지 않은 리소스입니다.");

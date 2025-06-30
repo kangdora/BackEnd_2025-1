@@ -21,13 +21,13 @@ public class PostController {
     public String getBoardPosts(@RequestParam Long boardId, Model model) {
         ArticleSummaryDto dto = articleService.getBoardSummary(boardId);
 
-            String boardName = dto.title();
-            List<ArticleInfo> articles = dto.articles();
+        String boardName = dto.title();
+        List<ArticleInfo> articles = dto.articles();
 
-            model.addAttribute("boardName", boardName);
-            model.addAttribute("articles", articles);
+        model.addAttribute("boardName", boardName);
+        model.addAttribute("articles", articles);
 
-            return "post";
-        }
-
+        return "post";
     }
+
+}

@@ -2,6 +2,8 @@ package com.example.bcsd.service;
 
 import com.example.bcsd.config.JwtUtil;
 import com.example.bcsd.dto.SignupRequestDto;
+import com.example.bcsd.exception.common.BaseException;
+import com.example.bcsd.exception.common.ErrorCode;
 import com.example.bcsd.model.USER_ROLES;
 import com.example.bcsd.model.User;
 import com.example.bcsd.repository.UserRepository;
@@ -21,10 +23,10 @@ public class AuthService {
 
     public String login(String email, String password) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new BadCredentialsException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+            throw new BaseException(ErrorCode.PASSWORD_MISMATCH);
         }
 
         return jwtUtil.createToken(user.getEmail(), user.getRoles().name());
