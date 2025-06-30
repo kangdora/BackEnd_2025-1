@@ -23,4 +23,10 @@ public class User {
     private String email;
     private String phone;
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private USER_ROLES roles;
+
+    @Builder.Default
+    private boolean activated = true;
 }
